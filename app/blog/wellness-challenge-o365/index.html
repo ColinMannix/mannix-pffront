@@ -24,35 +24,84 @@
 
         <section>
             <p>
-                [DRAFT]
+                It's the winter of 2022, and New Years Resolutions are in full swing. I received an invite to my company's wellness team, where we focused efforts on 
+                promoting employee health and incentivizing active lifestyles. I leveraged our existing O365 suite to devise a full-scope, readily-available solution 
+                to bolster our dwindling engagement. The result: participation doubled, costs dropped to zero, and we proved that understanding user behavior matters 
+                more than fancy features.
             </p>
             
             <h2>The Problem</h2>
             <p>
-                Low platform adoption, underutilized Microsoft 365 capabilities...
+                We had been through a few challenge cycles in the past hosted by our health insurance provider via a mobile app. Participation was low: only 15% of 
+                employees completed the last challenge. We needed ways to effectively engage employees. Prizes are obviously an incentive, but I decided to take a different 
+                approach by using what we already have and what employees use daily: the Microsoft suite.
             </p>
 
             <h2>The Solution</h2>
             <p>
-                Gamified wellness challenge using Power Automate, SharePoint, Power BI...
+                Having seen firsthand how powerful simple automations with RPA can strengthen business processes, I thought it was viable to take a shot using Microsoft Forms, 
+                SharePoint Lists, Power Automate, Power BI, and Teams. More importantly, meeting users where they already work (Teams) meant we could avoid the adoption 
+                friction that killed our previous challenges.<br>
+                <br>
+                The most important factor in even considering this approach was simple: cost. We pay for the O365 licenses, have ample storage, and have institutional knowledge on their implementation. The hosted challenge with our insurance had a cost that wasn't justified by current participation numbers, so we were browsing cheaper options. I started proof-of-concept development while other members researched cheaper hosted solutions.<br>
             </p>
 
             <h2>Technical Implementation</h2>
             <p>
-                Architecture, workflow design, integration points...
+                Testing started out smoothly: user submits their entry on a Microsoft Form while logged in with their corporate account, 
+                form submission triggers a Power Automate flow to add their entry into a SharePoint List, send a confirmation email. Easy.<br>
+                <br>
+                Next, tracking.<br>
+                <br>
+                How do we prompt regular submissions? Have them print a paper, scan it at the end? Send them to a website to type in their numbers?<br>
+                <br>
+                As I mentioned before, we were a Microsoft shop, so everyone had Teams open all day, every day. 
+                Maybe we can use that. I discovered that Power Automate has a Teams chatbot that you can use for a multitude of things. 
+                This was perfect for our use case. So, I built another Power Automate flow to read the participant list and prompt everyone daily for their inputs. 
+                This particular challenge was for water consumption. Then, I reached a technical limitation.<br>
+                <br>
+                The right tool for this job is Power Automate's Teams Connector, specifically the “Post a choice of options as the Flow bot to a user” block to ensure users 
+                can submit asynchronously. Every day at start of business, Power Automate will query the SharePoint List of participants and each participant a Teams message. 
+                The message will be interactive and receive their input. This card cannot be set up to take unstructured or semi-structured data; it must be choices. 
+                Well, if somebody drinks 85oz of water on Tuesday and 93oz of water on Wednesday, how do we differentiate?<br>
+                <br>
+                After research, it rang true that there was no true way to get it down to single-digit precision. So, I researched the standard water intake for individuals 
+                to determine an appropriate range. A bottle of water is 12oz, and some people drink little to no water, so we had to start at 0. What about the people who 
+                drink a ton of water? This is where the technical interpolates with the human factor. A very strong water intake is 120oz in a day, so let's split it into 
+                6 ranges: 0-20, 21-40, etc. 6 was the limit on choices to be given in this card (at the time).<br>
+                <br>
+                Responses would query an update to the participant lists, where running totals were tracked. Given the range limitation, we decided that adding the range's 
+                max to the running total was appropriate. So, if 21-40 was chosen, 40oz was added to the running total.<br>
+                <br>
+                After presenting this initial PoC, the team was excited but wanted to see a tracker of some sort. We already have a SharePoint site where the participant 
+                list is held, so why not embed a Power BI dashboard that displays leaders? That was easy enough: stacked horizontal bar graph sorted descending, 
+                with names next to the bars.<br>
             </p>
 
             <h2>Results and Lessons Learned</h2>
             <p>
-                Engagement metrics, what worked, what you'd change...
+                Overall, this implementation was an overwhelming success. Participation doubled to over 30%. We had so many participants that I reached a concurrency 
+                limit on the Teams querying flows. I copied the flow and ran a paginated model for the Teams prompts.<br>
+                <br>
+                And the best part: it was free! We were able to offer more prizes of higher quality to winners and incorporate a random drawing as well. A second 
+                challenge with exercise minutes followed a few months later. I used the same technical structure, just editing the tracked metric.<br>
+                <br>
+                Writing about this now, it seems like Microsoft has taken Adaptive cards to a whole new level. I'd love to check this out again with a stronger input 
+                capability. Just plain numbers would've been ideal, but we made the best with what was available.<br>
+                <br>
+                While it didn't integrate with Apple Fitness or other apps, I think participation was so high because it was easily accessible. Being on the same pane 
+                as normal business ops makes it painless and simple to click a button and submit every day. The convenience angle won this time.<br>
             </p>
+
+            <h2>Architecture</h2>
+            <br>
+            <img src="../../assets/images/wellness-challenge-architecture.svg" alt="Welness Challenge Architecture Diagram" style="max-width: 100%; height:auto; margin: 2rem 0;">
         </section>
     </article>
 
     <footer>
         <p>
-            <a href="mailto:colinmannix@gmail.com">colinmannix@gmail.com</a> | 
-            <a href="../">Back to Blog</a>
+            <a href="mailto:colinmannix@gmail.com">colinmannix@gmail.com</a> | <a href="../">Back to Blog</a>
         </p>
     </footer>
 </body>
