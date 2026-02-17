@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enabling Sales Teams: Building a Self-Service Cloud Sandbox Process - Colin Mannix</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+    <header>
+        <h1><a href="../../">Colin Mannix</a></h1>
+        <nav>
+            <a href="../../">Home</a>
+            <a href="../">Blog</a>
+            <a href="https://github.com/ColinMannix" target="_blank">GitHub</a>
+        </nav>
+    </header>
+
+    <article>
+        <header>
+            <h1>Enabling Sales Teams: Building a Cloud Sandbox Methodology</h1>
+            <p class="post-date">February 2026</p>
+        </header>
+
+        <section>
+            <p>
+                A solutions architect needs to demo infrastructure capabilities for an expansion opportunity on Friday. 
+                The demo requires cloud resources. It's Tuesday. By the time IT provisions access, procurement approves spend, 
+                and finance approves a cost code, it's the following Wednesday.
+            </p>
+            <p>
+                Technical adaptation requires agility and speed. Proof-of-concepts don’t have to be perfect; they just need to work. 
+                Engineers think fast and in turn need to work fast to stay current. That means when an idea or opportunity arises, work 
+                started yesterday. When a client-facing team comes to internal IT expecting to use corporate cloud platforms to support their work, 
+                they don’t expect roadblocks; they expect a gold stamp and a loose leash. A shorter leash can spin into a gamut of issues: 
+                frustration, executive dissatisfaction, and ultimately lost revenue. This leads to retros where executives ask, “Why did this happen?” 
+                and the best answer is “It’s complicated.
+            </p>
+            
+            <h2>The Problem: Death by Email Chains</h2>
+            <p>
+                Here's my story with a previous company. Client-facing engineering teams would frequently request space in a cloud platform to develop new 
+                infrastructure with the goal of presenting the concept and winning new business. There was no true process at the beginning, and the email 
+                chains looked a lot like this:
+            </p>
+            <p>
+                <em>"Hi Colin, can you provision me a sandbox in Azure? We are working on XYZ AI to do ABC for Q."</em><br>
+                <em>"Sure, can you submit a ticket with what you need?"</em><br>
+                <em>"Yes."</em><br>
+                [3 days later]<br>
+                <em>"Hi Colin, status on sandbox?"</em><br>
+                <em>"I never saw a ticket. Can you please submit one?"</em><br>
+                <em>"Yes, sorry. This is urgent, can it be done today?"</em><br>
+                <em>"No, I need to know what you're doing, who needs access, how much you're going to spend, and the lifespan. 
+                    Did your budget manager approve?"</em><br>
+                <em>"Okay why can't this be done today?"</em>
+            </p>
+            <p>
+                You get the point.
+            </p>
+            <p>
+                This was inevitable in the context of a publicly traded government contracting company. Compliance came first, 
+                second, and third. Step 0 was documentation of every cent and every ACL update. Touch points were aplenty: 
+                Solution Architect requests sandbox → Help desk ticket → IT approves access → IT approves expenditure with 
+                signatures → Budget manager approves cost code → Procurement approves expenditure → Procurement indicates payment method.
+            </p>
+            <p>
+                Automation was non-existent. Emails saying "approved" rained like an April afternoon. All of this had to happen 
+                before I could even provision a sandbox, so it could take two weeks before I logged into a cloud platform to grant 
+                access. Sometimes estimates would change. Other times approvals weren't given, so back to the drawing board.
+            </p>
+            <p>
+                For initiatives that are meant to increase revenue via quick, cheap demos, this timeline was unacceptable. The only 
+                tailwind we had was that clients moved at the speed of government. But client-facing teams have client-facing work to do. 
+                They can’t spend their time waiting for administrative tasks to complete.
+            </p>
+            <p>
+                This is where my work started. The process needed to be improved and understood by everyone involved. So, I put ideas 
+                into motion.
+            </p>
+
+            <h2>Understanding the Requirements</h2>
+            <p>
+                Each involved department had a different set of needs. I took the time to sit down with a member from each team to 
+                understand exactly what they would need for these scenarios.
+            </p>
+            <p>
+                <strong>IT</strong> needed access control managed via help desk tickets with proper manager approvals. They also 
+                required cost tracking through expenditure requests, each requiring dual signatures, and coordination to ensure 
+                everything stays on track: invoicing, naming, and timelines must be understood by all involved.
+            </p>
+            <p>
+                <strong>Procurement</strong> validated expenditure requests with budget manager approval. Their critical need: 
+                invoicing must show differentiation between projects, so Sandbox 1 gets charged to Cost Code 1, Sandbox 2 to Cost 
+                Code 2, and so on.
+            </p>
+            <p>
+                <strong>Budget Managers</strong> approved expenses on cost codes. Their approval was usually swift: approve $X for 
+                three months on cost code Q.
+            </p>
+            <p>
+                <strong>Client Teams</strong> must give accurate cost estimates. Budgets were strictly enforced: even an extra penny 
+                needed a supplementary procurement request, kicking 60% of this process back into motion. They needed to list precisely 
+                what they required: service principals with elevated roles, GitHub Enterprise licenses, specific resource types.
+            </p>
+            <p>
+                <strong>Executive Sponsors</strong>, as C-level leadership, needed to know progress, roadblocks, and causes. They'd 
+                start with solution architects and follow the process when problems arose. Keeping them updated and satisfied was critical.
+            </p>
+            <p>
+                Across all these requirements, we had a perfect storm of complexity. The "people factor" comes into play here, too. One 
+                of these approvers is out on PTO for the week? Scramble to find an alternate or fall five days behind.
+            </p>
+
+            <h2>The Solution: Standardization + Automation</h2>
+            
+            <h3>Standardized Request Fields</h3>
+            <p>
+                The easiest win was front-loading the requirements gathering. Put the onus on the architects to know precisely what they
+                 need before they ask. If I had all the information upfront, downstream issues became much easier to resolve. The must-have list:
+            </p>
+            <p>
+                <ul>
+                    <li>Project Name</li>
+                    <li>Cloud Platform</li>
+                    <li>Project Manager</li>
+                    <li>Technical Lead (Architect)</li>
+                    <li>Executive Sponsor 
+                    <li>Team Members</li>
+                    <li>Cost Code</li>
+                    <li>Monthly Budget</li>
+                    <li>Project Length</li>
+                </ul>
+            </p>
+            <p>
+                This may seem short given the complexity, but I merged some requirements into the technical implementation to simplify. 
+                This eliminated my need to follow up on specifics while spinning everything up.
+            </p>
+
+            <h3>Templated Cloud Environments</h3>
+            <p>
+                We implemented this in Azure and AWS. For Azure, the logically separate yet centrally managed answer was subscriptions: individual 
+                subscriptions inside a Sandbox management group under the main corporate tenant. Invoicing was done per-subscription, satisfying 
+                half of procurement's invoice needs.
+            </p>
+            <p>
+                Budgeting became easier. If expenditures were given as a total, I'd apply the budget across the lifespan. $1,200 for three months 
+                means $400 per month. Starting mid-month? $200, $400, $400, $200 to span three months. Combined with customized alerts: forecast on 
+                the 1st going over budget? Email the Technical Lead and myself. Additional alerts at 90%, 95%, 97%, 99%, and 100% of actual spend 
+                for worst-case situations.
+            </p>
+            <p>
+                Access control was straightforward. Since sandbox users were cloud engineers and other technical roles, we didn't need fine-grained 
+                IAM roles. I created a single IAM role: Technical Lead, with all permissions except budget modification. This was templated and created 
+                during subscription provisioning. The Technical Lead from the initial request received that role, then added their team with 
+                appropriate access.
+            </p>
+            <p>
+                On the IT side, I created a security group of designated team members with Owner permissions on the Sandbox management group. This 
+                security group inherits Owner roles on all child subscriptions, to be used if intervention was needed.
+            </p>
+
+            <h3>Granular Cost Tracking</h3>
+            <p>
+                The other half of procurement's need was determining which cost code corresponded to each project. They received invoices 
+                from Azure and AWS with separate charges for each project, but how could they determine which charge went where?
+            </p>
+            <p>
+                I developed a nomenclature for subscriptions: the project name consisted of procurement's assigned ID (for the PDF template) 
+                and the project name. For example: "0703-Cloud-AI-Chatbot". The procurement team could easily cross-reference their approved 
+                expenditures to validate spend.
+            </p>
+            <p>
+                Side note: I considered other approaches like resource tagging or invoice sections, but since procurement was unfamiliar with 
+                cloud billing structures, I opted for the most visible solution: subscription naming. Simplicity over technical purity.
+            </p>
+
+            <h2>Results and Impact</h2>
+            <p>
+                Follow-up calls with each team went well. The process was received well by the technical crowds, and the non-technical crowds 
+                expected a bit of a learning curve. Once familiarity developed, the process became a well-oiled machine.
+            </p>
+            <p>
+                We talked about sandbox provisioning in terms of days instead of weeks. Email chains quickly shrank from 20-30 to 10, with the 
+                10th being my green light for engineers to start work. The next 5 sandboxes were smooth and simple, especially with the architects 
+                having a readily available list of all the required information. They gathered that and sent it to me all at once, so I could 
+                immediately go through the right channels.
+            </p>
+            <p>
+                Friction remained when projects needed more than basic cloud resources. Incorporating identity providers, service principals 
+                needing specific permissions, and other one-offs still needed intervention to ensure compliance. For instance, I had to work with 
+                a team to increase resource quotas in AWS, since they didn't have permission to initiate those support cases.
+            </p>
+
+            <h2>Lessons Learned</h2>
+            
+            <h3>Process Before Automation</h3>
+            <p>
+                When dealing with a process whose failure has extreme consequence, it's important to start from step zero. Figure out what's 
+                going on, the pain points, then use that context to develop refinements.
+            </p>
+
+            <h3>Understand Each Stakeholder's "Why"</h3>
+            <p>
+                Each team has their own objective, but at the end of the day, these projects are crucial to continued business success. Rather 
+                than swinging the hammer of "mission-critical," address each party's concerns through their eyes.
+            </p>
+
+            <h3>Templates Are Your Friend</h3>
+            <p>
+                Having templated roles and permission sets was paramount from an IAM perspective. From an audit perspective, we had demonstrable 
+                control over spend and no potential for cross-environment contamination.
+            </p>
+
+            <h3>What I'd Do Differently</h3>
+            <p>
+                I would continue to build on this idea. There was significant effort put towards further automation using SharePoint, Microsoft Forms, 
+                and Power Automate. This would automate approvals instead of leaving them in email and open the door for executive visibility into 
+                ongoing projects with a centralized list.
+            </p>
+            <p>
+                Another substantial improvement would be Infrastructure-as-Code. While I did have ARM templates for roles and such, I didn't get 
+                the chance to translate that into a plug-and-play script that could take the fields and spin up everything automagically.
+            </p>
+
+            <h2>Why This Matters for Customer-Facing Roles</h2>
+            <p>
+                This type of thinking is crucial for customer-facing roles. Understanding why certain guardrails are in place, where pain 
+                points are, and developing a solution based on those constraints creates satisfactory outcomes for all parties. Well-designed 
+                processes act as a force multiplier. The thought put into design pays dividends when people can fight real problems, not bureaucracy.
+            </p>
+            <p>
+                The best infrastructure isn't just technically sound; it enables the people who depend on it to do their jobs effectively. 
+                That's what solutions engineering is all about.
+            </p>
+        </section>
+    </article>
+
+    <footer>
+        <p>
+            <a href="mailto:colinmannix@gmail.com">colinmannix@gmail.com</a>
+            <a href="../">Back to Blog</a>
+        </p>
+    </footer>
+</body>
+</html>
