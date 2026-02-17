@@ -272,7 +272,7 @@ blockquote p:last-child {
 
 /* Footer */
 footer {
-    padding: 2.5rem 3rem 3rem;
+    padding: 1.5rem 3rem; /* Reduced from 2.5rem 3rem 3rem */
     border-top: 2px solid var(--border);
     color: var(--text-secondary);
     font-size: 0.95rem;
@@ -283,13 +283,19 @@ footer {
     border-radius: 4px;
 }
 
+footer p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0; /* Remove default paragraph margin */
+}
+
 footer a {
-    color: var(--text-secondary);
-    margin-right: 1.25rem;
+    color: var(--accent);
 }
 
 footer a:hover {
-    color: var(--accent);
+    color: var(--accent-hover);
 }
 
 /* Responsive */
